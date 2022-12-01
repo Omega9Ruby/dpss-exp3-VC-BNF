@@ -89,15 +89,16 @@ class ResidualNet(nn.Module):
     for predicted Mel-spectrogram. It's widely accepted that
     this can help generate much more accurate Mel-spectrogram.
     """
-    def __init__(self, channels, other_params):
+    def __init__(self, in_channels, out_channels):
         """
         :param channels: equal to dimension of the Mel-spectrogram
         :param other_params: parameters for the definition of your residual net
         """
         super(ResidualNet, self).__init__()
-        self.channels = channels
+        self.in_channels = in_channels
+        self.out_channels = out_channels
         # define your module components below
-        # e.g. self.dense_layer = nn.Linear(in_features=channels, out_features=channels)
+        self.dense_layer = nn.Linear(in_features=in_channels, out_features=out_channels)
 
     def forward(self, x):
         """
@@ -134,7 +135,7 @@ class BLSTMToManyConversionModel(nn.Module):
                                    out_features=in_channels)
         self.emb_proj2 = nn.Linear(in_features=embd_dim,
                                    out_features=lstm_hidden * 2)
-        self.blstm1 = nn.LSTM(input_size=in_channels+embd_dim,
+        self.blstm1 = nn.LSTM(input_size=in_channels,
                               hidden_size=lstm_hidden,
                               bidirectional=True)
         self.blstm2 = nn.LSTM(input_size=lstm_hidden * 2,
@@ -186,6 +187,7 @@ class SPKEmbedding(nn.Module):
         # define your module components below
         # e.g. self.embedding_table = ...
         #from zxt
+        self.embedding_table = nn.Embedding(num_spk, embd_dim)
         
         
     def forward(self, spk_inds):
@@ -197,7 +199,7 @@ class SPKEmbedding(nn.Module):
         """
         # define your inference process below
         # e.g. return self.embedding_table(spk_inds)
-        pass
+        return self.embedding_table(spk_inds)
 
 
 class CustomToOneConversionModel(nn.Module):
