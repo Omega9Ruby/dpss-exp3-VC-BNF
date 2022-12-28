@@ -154,14 +154,14 @@ class BLSTMToManyConversionModel(nn.Module):
         """
         # look up speaker embedding
         spk_embds = self.spk_embed_net(spk_inds)
-        spk_embds =spk_embds.repeat(x.shape[0],1,1)
+        spk_embds = spk_embds.repeat(x.shape[0],1,1)
         
         # add speaker embd to the inputs
-        blstm1_inputs = _ # give your implementation here
+        blstm1_inputs = x + self.emb_proj1(spk_embds) # give your implementation here
         # pass to the 1st BLSTM layer
         blstm1_outs, _ = self.blstm1(blstm1_inputs)
         # add speaker embd to the outputs of 1st lstm
-        blstm2_inputs = _  # give your implementation here
+        blstm2_inputs = blstm1_outs + self.emb_proj2(spk_embds)  # give your implementation here
         # pass to the 2nd BLSTM layer
         blstm2_outs, _ = self.blstm2(blstm2_inputs)
         # project to the output dimension
