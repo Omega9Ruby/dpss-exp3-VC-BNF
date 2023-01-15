@@ -64,6 +64,9 @@ def main():
     model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=hps.TrainToOne.learning_rate)
 
+    # save loss
+    f = open('./train_to_one_res_loss.txt', 'w+')
+
     # start training
     for epoch in range(hps.TrainToOne.epochs):
         # training
@@ -87,6 +90,7 @@ def main():
             if idx % 1 == 0:  # print every batch
                 print('[%d, %5d] Training loss: %.5f' %
                       (epoch + 1, idx + 1, running_loss))
+                f.write(f'{running_loss}\n')
                 running_loss = 0.0
         # save model parameters
         torch.save(model.state_dict(), os.path.join(args.model_dir, "bnf-vc-to-one-{}.pt".format(epoch)))
@@ -121,6 +125,8 @@ def main():
                 mel_lengths=test_batch['length'].numpy(), ids=test_batch['fid'],
                 prefix='groundtruth')
             break  # only test one batch of data
+
+    f.close()
 
 
 if __name__ == '__main__':

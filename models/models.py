@@ -45,7 +45,7 @@ class BLSTMResConversionModel(nn.Module):
     Conversion model based on BLSTM with ResidualNet, you need to
     define your ResidualNet Module to be used in this Module.
     """
-    def __init__(self, in_channels, out_channels, lstm_hidden, other_params):
+    def __init__(self, in_channels, out_channels, lstm_hidden):
         """
         :param in_channels: input feature dimension,
                             usually (bnf_dim + f0s_dim) when use bnfs and f0s as inputs
@@ -100,7 +100,7 @@ class ResidualNet(nn.Module):
         # define your module components below
         self.layer = nn.Linear(in_features=in_channels, out_features=out_channels)
 
-    def forward(self, x, to):
+    def forward(self, x):
         """
         :param x: input mel-spectrogram
         :return: output improved mel-spectrogram
