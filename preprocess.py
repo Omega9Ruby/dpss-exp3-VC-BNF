@@ -10,7 +10,7 @@ from models.wenet.bin.recognize import AsrReco
 from config import Hparams
 
 
-hps = Hparams
+hp = Hparams
 
 
 def length_validate(features):

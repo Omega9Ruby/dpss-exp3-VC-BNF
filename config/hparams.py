@@ -1,17 +1,17 @@
 class Hparams:
     class Audio:
-        num_mels = 80
-        ppg_dim = 351
-        bn_dim = 256
-        num_freq = 1025  
-        min_mel_freq = 30.
-        max_mel_freq = 7600.
-        sample_rate = 16000
-        frame_length_ms = 25
-        frame_shift_ms = 10
-        upper_f0 = 500.
-        lower_f0 = 30.
-        n_mfcc = 13
+        num_mels = 80 # 梅尔谱维度
+        ppg_dim = 351 # PPG的向量维度
+        bn_dim = 256 # BNF的向量维度
+        num_freq = 1025  # 频率维度
+        min_mel_freq = 30. # 最小梅尔谱频率
+        max_mel_freq = 7600. # 最大梅尔谱频率
+        sample_rate = 16000 # 采样率
+        frame_length_ms = 25 # 窗长
+        frame_shift_ms = 10 # 窗移
+        upper_f0 = 500. # 最高基音频率
+        lower_f0 = 30. # 最低基音频率
+        n_mfcc = 13 # MFCC的采样帧长
         preemphasize = 0.97
         min_level_db = -80.0
         ref_level_db = 20.0

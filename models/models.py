@@ -65,7 +65,7 @@ class BLSTMResConversionModel(nn.Module):
                               bidirectional=True)
         self.out_projection = nn.Linear(in_features=2 * lstm_hidden,
                                         out_features=out_channels)
-        self.resnet = ResidualNet(out_channels, other_params)
+        self.resnet = ResidualNet(in_channels, out_channels)
 
     def forward(self, x):
         """
@@ -78,8 +78,8 @@ class BLSTMResConversionModel(nn.Module):
         blstm2_out, _ = self.blstm2(blstm1_out)
         # project to the output dimension
         initial_outs = self.out_projection(blstm2_out)
-        residual = self.resnet(initial_outs)
-        final_outs = _  # define the final outputs here
+        residual = self.resnet(x)
+        final_outs = initial_outs + residual  # define the final outputs here
         return final_outs
 
 
@@ -98,15 +98,15 @@ class ResidualNet(nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
         # define your module components below
-        self.dense_layer = nn.Linear(in_features=in_channels, out_features=out_channels)
+        self.layer = nn.Linear(in_features=in_channels, out_features=out_channels)
 
-    def forward(self, x):
+    def forward(self, x, to):
         """
         :param x: input mel-spectrogram
         :return: output improved mel-spectrogram
         """
         # define your inference process below
-        pass
+        return self.layer(x)
 
 
 class BLSTMToManyConversionModel(nn.Module):
